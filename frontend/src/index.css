@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark: #1a1b1a;
+  --color-card: #242424;
+  --color-accent: #22c55e;
+}
+
+body {
+  @apply bg-[#121212] text-white;
+}
