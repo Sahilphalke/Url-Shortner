@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
 // Note: For now, we'll use a placeholder for the auth token.
 // In a real app, this would be managed by a login state/context.
