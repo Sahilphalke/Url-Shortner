@@ -1,5 +1,9 @@
 const RecentLinkItem = ({ shortCode, originalUrl, clickCount }) => {
-  const shortUrl = `${window.location.protocol}//${window.location.hostname}:5000/api/v1/url/r/${shortCode}`;
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+  const shortUrl = `${API_BASE}/url/r/${shortCode}`;
+  
+  // Clean up the URL for display (remove https:// and /api/v1)
+  const displayDomain = API_BASE.replace(/^https?:\/\//, '').replace(/\/api\/v1$/, '');
   
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-gray-800 last:border-0 gap-2 sm:gap-0">
@@ -10,7 +14,7 @@ const RecentLinkItem = ({ shortCode, originalUrl, clickCount }) => {
           rel="noopener noreferrer" 
           className="text-accent font-medium shrink-0 hover:underline"
         >
-          {window.location.hostname}:5000/.../{shortCode}
+          {displayDomain}/.../{shortCode}
         </a>
         <span className="text-gray-400 truncate text-xs sm:text-sm block w-full sm:w-auto max-w-md">
           {originalUrl}
