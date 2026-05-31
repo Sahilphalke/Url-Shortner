@@ -72,6 +72,11 @@ const redirectUrl = async (req, res) => {
         return res.status(410).send("URL has expired");
     }
 
+    // Disable caching for the redirect to ensure every click hits the server
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    
     return res.redirect(url.originalUrl);
   } catch (error) {
     return res.status(500).send("Internal Server Error");

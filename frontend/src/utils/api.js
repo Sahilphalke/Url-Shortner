@@ -12,16 +12,18 @@ const getAuthHeaders = () => {
 
 export const api = {
     async getStats() {
-        const res = await fetch(`${API_BASE_URL}/url/stats`, {
-            headers: getAuthHeaders()
+        const res = await fetch(`${API_BASE_URL}/url/stats?t=${Date.now()}`, {
+            headers: getAuthHeaders(),
+            cache: 'no-store'
         });
         if (!res.ok) throw new Error('Failed to fetch stats');
         return res.json();
     },
 
     async getUrls() {
-        const res = await fetch(`${API_BASE_URL}/url/list`, {
-            headers: getAuthHeaders()
+        const res = await fetch(`${API_BASE_URL}/url/list?t=${Date.now()}`, {
+            headers: getAuthHeaders(),
+            cache: 'no-store'
         });
         if (!res.ok) throw new Error('Failed to fetch URLs');
         return res.json();

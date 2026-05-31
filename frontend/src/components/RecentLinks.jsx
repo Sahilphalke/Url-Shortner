@@ -42,13 +42,23 @@ const RecentLinks = ({ links, loading, onClearAll, onRefresh }) => {
       <div className="bg-[#242424] rounded-xl border border-gray-800 p-4 sm:p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-base sm:text-lg font-bold">Recent links</h2>
-          <button 
-            onClick={onClearAll}
-            className="bg-[#2a2a2a] border border-gray-700 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
-            disabled={links.length === 0 || loading}
-          >
-            Clear all
-          </button>
+          <div className="flex gap-2">
+            <button 
+              onClick={() => onRefresh()}
+              className="bg-[#2a2a2a] border border-gray-700 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg font-medium hover:bg-[#333] transition-colors flex items-center gap-2"
+              title="Refresh statistics"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+              Refresh
+            </button>
+            <button 
+              onClick={onClearAll}
+              className="bg-[#2a2a2a] border border-gray-700 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg font-medium hover:bg-[#333] transition-colors disabled:opacity-50"
+              disabled={links.length === 0 || loading}
+            >
+              Clear all
+            </button>
+          </div>
         </div>
         
         <div className="flex flex-col">
