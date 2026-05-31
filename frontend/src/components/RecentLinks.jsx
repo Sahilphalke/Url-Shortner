@@ -1,9 +1,17 @@
-const RecentLinkItem = ({ shortCode, originalUrl, clickCount }) => {
+const RecentLinkItem = ({ shortCode, originalUrl, clickCount, onRefresh }) => {
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
   const shortUrl = `${API_BASE}/url/r/${shortCode}`;
   
   // Clean up the URL for display (remove https:// and /api/v1)
   const displayDomain = API_BASE.replace(/^https?:\/\//, '').replace(/\/api\/v1$/, '');
+  
+  const handleClick = () => {
+    // If onRefresh is provided, call it after a short delay
+    // to allow the backend to process the click increment
+    if (onRefresh) {
+      setTimeout(onRefresh, 1000);
+    }
+  };
   
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-gray-800 last:border-0 gap-2 sm:gap-0">
@@ -13,6 +21,7 @@ const RecentLinkItem = ({ shortCode, originalUrl, clickCount }) => {
           target="_blank" 
           rel="noopener noreferrer" 
           className="text-accent font-medium shrink-0 hover:underline"
+          onClick={handleClick}
         >
           {displayDomain}/.../{shortCode}
         </a>
@@ -27,7 +36,7 @@ const RecentLinkItem = ({ shortCode, originalUrl, clickCount }) => {
   );
 };
 
-const RecentLinks = ({ links, loading, onClearAll }) => {
+const RecentLinks = ({ links, loading, onClearAll, onRefresh }) => {
   return (
     <div className="max-w-5xl mx-auto px-4 mb-12">
       <div className="bg-[#242424] rounded-xl border border-gray-800 p-4 sm:p-6">
@@ -47,7 +56,7 @@ const RecentLinks = ({ links, loading, onClearAll }) => {
             <div className="py-8 text-center text-gray-500 animate-pulse">Loading links...</div>
           ) : links.length > 0 ? (
             links.map((link) => (
-              <RecentLinkItem key={link.id} {...link} />
+              <RecentLinkItem key={link.id} {...link} onRefresh={onRefresh} />
             ))
           ) : (
             <div className="py-8 text-center text-gray-500">No links created yet.</div>

@@ -18,10 +18,10 @@ function AppContent() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { isAuthenticated, token } = useAuth();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (isSilent = false) => {
     if (!isAuthenticated) return;
 
-    setLoading(true);
+    if (!isSilent) setLoading(true);
     try {
       const [statsRes, linksRes] = await Promise.all([
         api.getStats(),
@@ -31,9 +31,10 @@ function AppContent() {
       setLinks(linksRes.data);
     } catch (err) {
       console.error("Error fetching data:", err);
-      toast.error("Failed to load data");
+      // Only show error toast if not a silent background update
+      if (!isSilent) toast.error("Failed to load data");
     } finally {
-      setLoading(false);
+      if (!isSilent) setLoading(false);
     }
   }, [isAuthenticated]);
 
@@ -48,6 +49,13 @@ function AppContent() {
     Promise.resolve().then(() => {
         fetchData();
     });
+
+    // Set up polling for real-time updates
+    const interval = setInterval(() => {
+      fetchData(true);
+    }, 5000); // Update every 5 seconds
+
+    return () => clearInterval(interval);
   }, [fetchData, isAuthenticated, token]);
 
   const handleUrlCreated = () => {
@@ -77,7 +85,12 @@ function AppContent() {
           onAuthRequired={() => setIsAuthModalOpen(true)} 
         />
         <StatsDashboard stats={stats} loading={loading} />
-        <RecentLinks links={links} loading={loading} onClearAll={handleClearAll} />
+        <RecentLinks 
+          links={links} 
+          loading={loading} 
+          onClearAll={handleClearAll}
+          onRefresh={() => fetchData(true)} 
+        />
       </div>
 
       <AuthModal 
