@@ -22,6 +22,8 @@ jobs:
         run: npm install
         
       - name: Validate Prisma Schema
+        env:
+          DATABASE_URL: "postgresql://user:password@localhost:5432/db"
         run: npx prisma validate
         
   frontend-validation:
