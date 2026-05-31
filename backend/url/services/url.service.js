@@ -37,11 +37,7 @@ const clearUserUrls = async (userId) => {
 };
 
 const getUrlByCode = async (code) => {
-  const url = await urlModel.findByShortCode(code);
-  if (url) {
-    await urlModel.incrementClickCount(url.id);
-  }
-  return url;
+  return await urlModel.findByShortCode(code);
 };
 
 const getStats = async (userId) => {
