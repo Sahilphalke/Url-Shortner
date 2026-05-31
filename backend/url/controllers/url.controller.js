@@ -1,6 +1,5 @@
 const { sendSuccess, sendError } = require("../../utils/response");
 const urlService = require("../services/url.service");
-const { addAnalyticsJob } = require("../../analytics/queues/analytics.queue");
 
 const createShortUrl = async (req, res) => {
   try {
@@ -73,17 +72,8 @@ const redirectUrl = async (req, res) => {
         return res.status(410).send("URL has expired");
     }
 
-    // Add background job for analytics
-    await addAnalyticsJob({
-      urlId: url.id,
-      ipAddress: req.ip,
-      userAgent: req.get("user-agent"),
-      referrer: req.get("referrer") || req.get("referer"),
-    });
-
     return res.redirect(url.originalUrl);
   } catch (error) {
-    console.error("Redirect error:", error);
     return res.status(500).send("Internal Server Error");
   }
 };

@@ -8,9 +8,6 @@ const authRoutes = require("./auth/routes/auth.route");
 const urlRoutes = require("./url/routes/url.route");
 const userRoutes = require("./user/routes/user.route");
 
-// Initialize BullMQ Workers
-require("./analytics/workers/analytics.worker");
-
 const app = express();
 
 const PORT = process.env.PORT || 5000;
